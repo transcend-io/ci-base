@@ -20,9 +20,23 @@ RUN apt-get update && apt-get install -y \
     python-dev \
     python-pip \
     shellcheck \
+    git \
+    apt-transport-https \
+    ca-certificates \
+    gnupg2 \
+    software-properties-common
     # postgresql-dev make g++ openssh bash curl \
     # tini libpq postgresql-client
-    git
+
+# Install docker
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    apt-key fingerprint 0EBFCD88 && \
+    add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/debian \
+      $(lsb_release -cs) \
+      stable"
+RUN apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Copy over application code
 COPY package.json yarn.lock /base/
