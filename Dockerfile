@@ -24,12 +24,15 @@ RUN npm i ts-node@${TS_NODE_VERSION}
 # Install python and pip
 RUN apk add --no-cache \
     python3 \
-    python \
+    python2 \
+    postgresql-dev make g++ \
     git openssh \
     bash curl
 
 # Setup a simple init process & libpq
 RUN apk add --no-cache tini libpq
+RUN apk add --no-cache postgresql-client
+ENTRYPOINT ["/sbin/tini", "--"]
 
 # Install yarn
 RUN touch ~/.bash_profile
