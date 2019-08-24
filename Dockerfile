@@ -1,18 +1,26 @@
 # Node image
-ARG NODE_IMAGE=10.15.0-alpine
+ARG NODE_IMAGE=10.15.0
 
 # Image for building
 FROM node:${NODE_IMAGE} AS npm_compiler
 
-# Versions
+# Envs
 ARG NPM_VERSION=6.4.1
 ARG TS_NODE_VERSION=8.3.0
 ARG DOCKER_COMPOSE_VERSION=1.21.2
 ARG CI=true
 
-# Install packages
-RUN mkdir -p /base
-WORKDIR /base
+# Install required packages available from the Debian repo
+# NOTE: output isn't cleaned up so base images can easily run install again w/o
+# needing to run `apt-get update`
+RUN apt-get update && apt-get install -y \
+    python \
+    python-dev \
+    python-pip \
+    shellcheck \
+    # postgresql-dev make g++ openssh bash curl \
+    # tini libpq postgresql-client
+    git
 
 # Copy over application code
 COPY package.json yarn.lock /base/
@@ -22,32 +30,19 @@ RUN npm i -g npm@${NPM_VERSION}
 RUN npm i -g ts-node@${TS_NODE_VERSION}
 RUN npm i -g check-dependencies
 
-# Install python and pip
-RUN apk add --no-cache \
-    python3 \
-    python2 \
-    postgresql-dev make g++ \
-    git openssh \
-    bash curl
-
 # Setup a simple init process & libpq
-RUN apk add --no-cache tini libpq
-RUN apk add --no-cache postgresql-client
-ENTRYPOINT ["/sbin/tini", "--"]
+# ENTRYPOINT ["/sbin/tini", "--"]
+# Use bash instead of sh
+# SHELL ["/bin/bash", "-c"]
 
 # Install yarn
-RUN touch ~/.bash_profile
-ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-RUN source ~/.bash_profile
 
 # Install pre-commit, docker-compose,awscli
-RUN pip3 install --upgrade pip
-RUN pip3 install --user 'pyyaml==3.12' pre-commit pathlib2 docker-compose==${DOCKER_COMPOSE_VERSION}
-RUN pip3 install --user --upgrade awscli && export PATH=$PATH:$HOME/.local/bin
-
-# Use bash instead of sh
-SHELL ["/bin/bash", "-c"]
+ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+RUN pip install --upgrade pip
+RUN pip install --user 'pyyaml==3.12' pre-commit pathlib2 docker-compose==${DOCKER_COMPOSE_VERSION}
+RUN pip install --user --upgrade awscli && export PATH=$PATH:$HOME/.local/bin
 
 # Expose envs
 ENV CIRCLE_COMPARE_URL ${CIRCLE_COMPARE_URL}

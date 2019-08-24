@@ -1,0 +1,77 @@
+# See http://pre-commit.com for more information
+# See http://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: v1.3.0
+    hooks:
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: check-case-conflict
+    -   id: check-executables-have-shebangs
+    -   id: detect-private-key
+        exclude: (ssl/)
+    -   id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+    -   id: check-yaml
+        files: (yaml$|yml$)
+-   repo: local
+    hooks:
+    -   id: tslint
+        name: TSLint Packages
+        language: node
+        entry: ./node_modules/.bin/tslint
+        args: [--fix]
+        types: [file]
+        files: packages/(commons|core|admin-dashboard|backend|privacy-center)/src/.*\.(js|jsx|ts|tsx)$
+    -   id: tslint-checks
+        name: TSLint Tests
+        language: node
+        entry: ./node_modules/.bin/tslint
+        args: [--fix]
+        types: [file]
+        files: tests/(checks|jest|storybook|cypress)/.*\.(js|jsx|ts|tsx)$
+    -   id: tslint-internals
+        name: TSLint Internals
+        language: node
+        entry: ./node_modules/.bin/tslint
+        args: [--fix]
+        types: [file]
+        files: internals/scripts/.*\.(js|jsx|ts|tsx)$
+    # -   id: dockerfile-lint
+    #     name: Dockerfile Lint
+    #     language: docker_image
+    #     # https://github.com/hadolint/hadolint
+    #     entry: hadolint/hadolint:v1.7.0 hadolint
+    #     files: ^.*Dockerfile.*$
+    # -   id: shellcheck-lint
+    #     name: Shellcheck
+    #     language: docker_image
+    #     # https://github.com/koalaman/shellcheck
+    #     entry: koalaman/shellcheck:v0.5.0
+    #     types: [shell]
+    # -   id: markdown-lint
+    #     name: Markdown Lint
+    #     language: node
+    #     # https://github.com/igorshubovych/markdownlint-cli
+    #     additional_dependencies: [markdownlint-cli]
+    #     entry: markdownlint
+    #     types: [markdown]
+    # -   id: eslint
+    #     name: ESLint
+    #     language: system
+    #     entry: ./node_modules/.bin/eslint
+    #     args: [--fix]
+    #     types: [file]
+    #     files: \.(js|jsx|ts|tsx)$
+    # -   id: check-repo
+    #     name: Check Repository Configuration
+    #     language: system
+    #     entry: sh -c 'yarn check:repo'
+    #     always_run: true
+    #     files: README.md
+    # -   id: check-refactor
+    #     name: Check that code is refactored
+    #     language: system
+    #     entry: sh -c 'yarn refactor:check'
+    #     always_run: true
+    #     files: README.md
