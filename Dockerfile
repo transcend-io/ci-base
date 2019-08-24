@@ -20,6 +20,7 @@ COPY package.json yarn.lock /base/
 # Install npm
 RUN npm i -g npm@${NPM_VERSION}
 RUN npm i -g ts-node@${TS_NODE_VERSION}
+RUN npm i -g check-dependencies
 
 # Install python and pip
 RUN apk add --no-cache \
