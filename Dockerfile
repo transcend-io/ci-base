@@ -13,6 +13,7 @@ ARG CI=true
 # Install required packages available from the Debian repo
 # NOTE: output isn't cleaned up so base images can easily run install again w/o
 # needing to run `apt-get update`
+# REFERENCE: https://github.com/luminopia/docker-ci-base-standard/blob/master/Dockerfile
 RUN apt-get update && apt-get install -y \
     python \
     python-dev \
