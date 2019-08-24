@@ -15,11 +15,11 @@ RUN mkdir -p /base
 WORKDIR /base
 
 # Copy over application code
-COPY package.json package-lock.json /base/
+COPY package.json yarn.lock /base/
 
 # Install npm
 RUN npm i -g npm@${NPM_VERSION}
-RUN npm i ts-node@${TS_NODE_VERSION}
+RUN npm i -g ts-node@${TS_NODE_VERSION}
 
 # Install python and pip
 RUN apk add --no-cache \
@@ -36,11 +36,11 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 # Install yarn
 RUN touch ~/.bash_profile
+ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 RUN source ~/.bash_profile
 
 # Install pre-commit, docker-compose,awscli
-ENV PATH="$HOME/.local/bin:/root/.local/bin:${PATH}"
 RUN pip3 install --upgrade pip
 RUN pip3 install --user 'pyyaml==3.12' pre-commit pathlib2 docker-compose==${DOCKER_COMPOSE_VERSION}
 RUN pip3 install --user --upgrade awscli && export PATH=$PATH:$HOME/.local/bin
