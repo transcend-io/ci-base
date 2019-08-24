@@ -27,6 +27,11 @@ RUN apk add --no-cache \
     git openssh \
     bash curl
 
+# Install yarn
+RUN touch ~/.bash_profile
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+RUN source ~/.bash_profile
+
 # Install pre-commit, docker-compose,awscli
 ENV PATH="$HOME/.local/bin:/root/.local/bin:${PATH}"
 RUN pip3 install --upgrade pip
