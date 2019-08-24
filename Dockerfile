@@ -27,6 +27,9 @@ RUN apk add --no-cache \
     git openssh \
     bash curl
 
+# Setup a simple init process & libpq
+RUN apk add --no-cache tini libpq
+
 # Install yarn
 RUN touch ~/.bash_profile
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
