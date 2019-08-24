@@ -25,7 +25,7 @@ RUN npm i ts-node@${TS_NODE_VERSION}
 RUN apk add --no-cache \
     python3 \
     git openssh \
-    bash
+    bash curl
 
 # Install pre-commit, docker-compose,awscli
 ENV PATH="$HOME/.local/bin:/root/.local/bin:${PATH}"
