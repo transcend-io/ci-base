@@ -1,0 +1,22 @@
+{
+  "name": "@transcend-io/ci-base",
+  "version": "1.0.0",
+  "description": "Image for running Circle CI testing",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/transcend-io/ci-base"
+  },
+  "bugs": {
+    "url": "https://github.com/transcend-io/ci-base/issues"
+  },
+  "main": ".",
+  "engines": {},
+  "author": "Transcend Inc.",
+  "scripts": {
+    "####### Build #######": "",
+    "build": "docker build -f \"./Dockerfile\" ."
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
