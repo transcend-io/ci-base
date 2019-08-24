@@ -23,11 +23,14 @@ RUN npm i ts-node@${TS_NODE_VERSION}
 # Install python and pip
 RUN apk add --no-cache \
     python3 \
-    git openssh
+    git openssh \
+    bash
 
 # Install pre-commit, docker-compose,awscli
 ENV PATH="$HOME/.local/bin:/root/.local/bin:${PATH}"
 RUN pip3 install --upgrade pip
-# RUN pip install --upgrade pip
 RUN pip3 install --user 'pyyaml==3.12' pre-commit pathlib2 docker-compose==${DOCKER_COMPOSE_VERSION}
 RUN pip3 install --user --upgrade awscli && export PATH=$PATH:$HOME/.local/bin
+
+# Use bash instead of sh
+SHELL ["/bin/bash", "-c"]
