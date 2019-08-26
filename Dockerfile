@@ -53,8 +53,8 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Install npm
-RUN yarn add ts-node --global
-RUN yarn add check-dependencies --global
+RUN yarn global add ts-node
+RUN yarn global add check-dependencies
 RUN yarn add puppeteer
 
 # Setup a simple init process & libpq
