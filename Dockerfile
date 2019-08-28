@@ -49,8 +49,7 @@ RUN apt-get update && \
 COPY package.json yarn.lock ./
 
 # Install yarn
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+RUN npm install -g yarn@1.17.3
 
 # Install npm
 RUN yarn global add ts-node
