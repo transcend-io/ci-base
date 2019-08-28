@@ -50,10 +50,10 @@ COPY package.json yarn.lock ./
 
 # Install yarn
 RUN npm install -g yarn@1.17.3
+ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Install npm
-RUN yarn global add ts-node
-RUN yarn global add check-dependencies
+RUN yarn global add ts-node typescript check-dependencies
 RUN yarn add puppeteer
 
 # Setup a simple init process & libpq
