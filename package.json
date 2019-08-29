@@ -17,7 +17,7 @@
     "####### Build #######": "",
     "build": "docker build -f \"./Dockerfile\" . --tag transcendio/ci-base",
     "build:nocache": "yarn build --no-cache",
-    "pub": "npm run build && docker push transcendio/ci-base:latest"
+    "pub": "npm run build && docker --config ~/.docker-docker push transcendio/ci-base:latest"
   },
   "dependencies": {},
   "devDependencies": {}
