@@ -2,10 +2,9 @@
 ARG NODE_IMAGE=10.15.0
 
 # Image for building
-FROM node:${NODE_IMAGE} AS npm_compiler
+FROM node:${NODE_IMAGE}
 
 # Envs
-ARG DOCKER_COMPOSE_VERSION=1.21.2
 ARG CI=true
 
 # Install required packages available from the Debian repo
@@ -23,8 +22,6 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     gnupg2 \
     software-properties-common
-    # postgresql-dev make g++ openssh bash curl \
-    # tini libpq postgresql-client
 
 # Dependencies needed to run chrome headless
 # https://github.com/Googlechrome/puppeteer/issues/290#issuecomment-322921352
@@ -34,16 +31,6 @@ RUN apt-get update && \
   libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
   libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
   ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-
-# Install docker
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-    apt-key fingerprint 0EBFCD88 && \
-    add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) \
-      stable"
-RUN apt-get update && \
-    apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Copy over application code
 COPY package.json yarn.lock ./
@@ -56,12 +43,9 @@ ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/g
 RUN yarn global add ts-node typescript check-dependencies
 RUN yarn add puppeteer
 
-# Setup a simple init process & libpq
-# ENTRYPOINT ["/sbin/tini", "--"]
-
-# Install pre-commit, docker-compose,awscli
+# Install pre-commit, awscli
 RUN pip install --upgrade pip
-RUN pip install --user 'pyyaml==3.12' pre-commit pathlib2 docker-compose==${DOCKER_COMPOSE_VERSION}
+RUN pip install --user 'pyyaml==3.12' pre-commit pathlib2
 RUN pip install --user --upgrade awscli && export PATH=$PATH:$HOME/.local/bin
 
 # Expose envs TODO unecessary?
