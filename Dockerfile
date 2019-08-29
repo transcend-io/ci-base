@@ -32,6 +32,13 @@ RUN apt-get update && \
   libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
   ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
 
+# Install docker https://circleci.com/docs/2.0/building-docker-images/
+ENV VER "17.03.0-ce"
+RUN curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+RUN tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+RUN mv /tmp/docker/* /usr/bin
+RUN docker --version
+
 # Copy over application code
 COPY package.json yarn.lock ./
 
