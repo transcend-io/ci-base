@@ -52,7 +52,7 @@ RUN yarn add puppeteer
 
 # Install pre-commit, awscli
 RUN pip install --upgrade pip
-RUN pip install --user 'pyyaml==3.12' pre-commit pathlib2
+RUN pip install --user 'pyyaml==3.12' pre-commit pathlib2 docker-compose
 RUN pip install --user --upgrade awscli && export PATH=$PATH:$HOME/.local/bin
 
 # Expose envs TODO unecessary?
