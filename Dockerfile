@@ -1,5 +1,5 @@
 # Node image
-ARG NODE_IMAGE=10.15.0
+ARG NODE_IMAGE=12.10.0
 
 # Image for building
 FROM node:${NODE_IMAGE}
