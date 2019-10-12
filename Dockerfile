@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
   apt-transport-https \
   ca-certificates \
   gnupg2 \
-  software-properties-common
+  software-properties-common \
+  jq
 
 # Copy over application code
 COPY package.json yarn.lock ./
