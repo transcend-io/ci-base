@@ -31,7 +31,7 @@ RUN npm install -g yarn@1.17.3
 ENV PATH="$HOME/.local/bin:/root/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Install npm
-RUN yarn global add ts-node typescript check-dependencies rimraf
+RUN yarn global add ts-node typescript check-dependencies rimraf tsconfig-paths
 
 # Install pre-commit, awscli
 RUN pip install --upgrade pip
